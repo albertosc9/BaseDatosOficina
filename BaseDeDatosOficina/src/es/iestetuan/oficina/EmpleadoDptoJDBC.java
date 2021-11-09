@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class EmpleadoDptoJDBC {
@@ -15,7 +16,8 @@ public class EmpleadoDptoJDBC {
 
 		Connection conex = conectar();
 		
-		crear();
+//		crear();
+		modificar(60);
 		
 		
 		
@@ -72,12 +74,16 @@ public class EmpleadoDptoJDBC {
 	public static void crear() {
 		
 		Connection conexion = conectar();
-		
+		PreparedStatement stm;
 		try {
 			
 			
-		PreparedStatement stm = conexion.prepareStatement("insert into departamentos values (?,?,?)");
+			
+			
+			
+			stm  = conexion.prepareStatement("insert into departamentos values (?,?,?)");
 		
+			
 			
 			
 			
@@ -113,6 +119,61 @@ public class EmpleadoDptoJDBC {
 			
 		} catch (SQLException e) {
 			
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+	}
+	private static void modificar(int numero) {
+		
+		Connection conexion = conectar();
+		
+		
+		
+		String nombreDep = "Informatica y comuncaciones";
+		String localidad = " ";
+		
+		
+		
+		
+		
+		try {
+			
+			Statement stm = conexion.createStatement();
+			
+			String q1 = "update departamentos set dnombre = '" + nombreDep + "', loc='"+localidad+"' where dept_no ='"+numero+"'";
+			
+			
+			int x = stm.executeUpdate(q1);
+			
+			if (x>0) {
+				System.out.println("actualizado");
+			}else {
+				System.out.println("fallo");
+			}
+			
+			
+			
+			
+			
+			
+			
+			conexion.close();
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
