@@ -12,19 +12,23 @@ import java.util.Scanner;
 public class EmpleadoDptoJDBC {
 
 	 static Scanner read = new Scanner(System.in);
+	 
+	 	
+	 
+	 
 	public static void main(String[] args) {
 		
 
 		
-		
-//		crearDepartamento();
-//		modificarDepartamento(60);
+//		crearDepartamento(50,"Informática","Madrid");
+//		crearDepartamento(60,"Comunicaciones","Madrid");
+//		modificarDepartamento(60,"Informática y comunicaciones", "");
 //		borrarDepartamento(60);
 //		consultarDepartamento(50);
-//		crearEmpleado();
+//		crearEmpleado(8001,"Justo","Prog.MP",7782,"2021-11-10",1570,0,50);
 //		consultarEmpleados();
-//		borrarEmpleado(7369);
-//		modificarEmpleado(7521);
+//		borrarEmpleado(7499);
+//		modificarEmpleado(7369,1105,50);
 		
 		
 		
@@ -33,6 +37,8 @@ public class EmpleadoDptoJDBC {
 		
 		Connection conexion = null;
 		
+		String DRIVER = "org.mariadb.jdbc.Driver";
+	    
 		
 		String url = "jdbc:mariadb://localhost:3306/oficina";
 		
@@ -42,7 +48,7 @@ public class EmpleadoDptoJDBC {
 		
 		
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
+			Class.forName(DRIVER);
 			
 			
 		conexion = 	DriverManager.getConnection(url,user,pass);
@@ -78,7 +84,7 @@ public class EmpleadoDptoJDBC {
 		
 	}
 	
-	public static void crearDepartamento() {
+	public static void crearDepartamento(int numero,String nombre,String loc) {
 		
 		Connection conexion = conectar();
 		PreparedStatement stm;
@@ -93,20 +99,17 @@ public class EmpleadoDptoJDBC {
 			
 			
 			
-			
-			
-			System.out.println("introduce el numero de departamento");
-			int numero = read.nextInt();
-			System.out.println("introduce el nombre del dep");
-			String nombre = read.next();
-			System.out.println("introduce la localizacion");
-			String loc = read.next();
-			
 			stm.setInt(1, numero);
 			stm.setString(2,nombre);
 			stm.setString(3, loc);
 			
-			ResultSet result  = stm.executeQuery();
+			int x = stm.executeUpdate();
+			
+			if (x>0) {
+				System.out.println("insertado correctamente");
+			}else {
+				System.out.println("fallo");
+			}
 			
 		
 			
@@ -133,19 +136,13 @@ public class EmpleadoDptoJDBC {
 		
 		
 	}
-	private static void modificarDepartamento(int numero) {
+	public static void modificarDepartamento(int numero,String nombreDep,String localidad) {
 		
 		Connection conexion = conectar();
 		
 		
 		
-		String nombreDep = "Informatica y comuncaciones";
-		String localidad = " ";
-		
-		
-		
-		
-		
+
 		try {
 			
 			Statement stm = conexion.createStatement();
@@ -188,7 +185,7 @@ public class EmpleadoDptoJDBC {
 		
 		
 	}
-	private static void borrarDepartamento(int numero) {
+	public static void borrarDepartamento(int numero) {
 		
 		Connection conexion = conectar();
 		
@@ -231,7 +228,7 @@ public class EmpleadoDptoJDBC {
 		
 		
 	}
-	private static void consultarDepartamento(int numero) {
+	public static void consultarDepartamento(int numero) {
 
 	
 		
@@ -254,6 +251,7 @@ public class EmpleadoDptoJDBC {
 			
 			
 			
+			conexion.close();
 			
 			
 			
@@ -270,7 +268,7 @@ public class EmpleadoDptoJDBC {
 		
 		
 	}
-	private static void crearEmpleado() {
+	public static void crearEmpleado(int numero,String apellido,String prof,int cod,String fecha,float salario,float comis,int numeroDept) {
 		
 		Connection conexion = conectar();
 		
@@ -280,24 +278,8 @@ public class EmpleadoDptoJDBC {
 	
 		Date date;
 	
-		
-		System.out.println("Introduce su numero empleado");
-		int numero = read.nextInt();
-		System.out.println("apellido");
-		String apellido = read.next();
-		System.out.println("introduce profesion");
-		String prof = read.next();
-		System.out.println("codigo director: ");
-		int cod = read.nextInt();
-		System.out.println("introduce fecha alta formato año-mes-dia");
-		String fecha = read.next();
 		date = Date.valueOf(fecha);
-		System.out.println("introduce salario");
-		float salario = read.nextFloat();
-		System.out.println("introduce comision ");
-		float comis = read.nextFloat();
-		System.out.println("introduce dept_no ");
-		int numeroDept = read.nextInt();
+		
 		
 		
 		try {
@@ -330,7 +312,7 @@ public class EmpleadoDptoJDBC {
 		
 		
 	}
-	private static void consultarEmpleados() {
+	public static void consultarEmpleados() {
 		
 		Connection conex = conectar();
 		
@@ -360,10 +342,8 @@ public class EmpleadoDptoJDBC {
 		
 		
 		
-		
 		conex.close();
-		
-		
+			
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -371,12 +351,10 @@ public class EmpleadoDptoJDBC {
 		}
 		
 		
-		
-	
-		
+
 		
 	}
-	private static void borrarEmpleado(int numero) {
+	public static void borrarEmpleado(int numero) {
 		
 		Connection conexion = conectar();
 		
@@ -419,14 +397,11 @@ public class EmpleadoDptoJDBC {
 		
 		
 	}
-	private static void modificarEmpleado(int emp_no) {
+	public static void modificarEmpleado(int emp_no,float salario,int dept_no) {
 		
 		
 		Connection conexion = conectar();
-		
-		
-		float salario = 1600;
-		int dept_no = 50;
+	
 		
 		
 		try {
